@@ -25,12 +25,12 @@ RSpec.describe Question, type: :model do
     expect(question.raw).to eql("{\"foo\":{}}")
   end
 
-  describe "#answer" do
+  describe "#find_answer" do
     context "when a RadioAnswer is associated to the question" do
       it "returns the RadioAnswer object" do
         radio_answer = create(:radio_answer)
         question = create(:question, :radio, radio_answer: radio_answer)
-        expect(question.answer).to eq(radio_answer)
+        expect(question.find_answer).to eq(radio_answer)
       end
     end
 
@@ -38,7 +38,7 @@ RSpec.describe Question, type: :model do
       it "returns the ShortTextAnswer object" do
         short_text_answer = create(:short_text_answer)
         question = create(:question, :short_text, short_text_answer: short_text_answer)
-        expect(question.answer).to eq(short_text_answer)
+        expect(question.find_answer).to eq(short_text_answer)
       end
     end
   end
