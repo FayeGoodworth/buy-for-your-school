@@ -1,6 +1,6 @@
-version: "3.7"
+version: "3.8"
 services:
-  web:
+  test:
     build:
       context: .
       args:
@@ -8,26 +8,28 @@ services:
     command: bundle exec rake
     ports:
       - "3000:3000"
-    links:
-      - db
+    depends_on:
+      - test-db
     env_file:
        - .env.test
     environment:
-      DATABASE_URL: postgres://postgres:password@db:5432/buy-for-your-school-test
+      DATABASE_URL: postgres://postgres:password@test-db:5432/buy-for-your-school-test
       DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
-    volumes:
-      - .:/srv/app
-    tty: true
-    stdin_open: true
+    # volumes:
+    #   - .:/srv/app
+    # tty: true
+    # stdin_open: true
     networks:
       - test
 
-  db:
+  test-db:
     image: postgres
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
+      POSTGRES_HOST_AUTH_METHOD: trust
     networks:
       - test
 
